@@ -32,7 +32,8 @@ int main(){
     mainmngr->print_hardware_props();
     auto context = mainmngr->get_context("main");
 
-    glViewport(0,0,1920,1080);
+    context->activate_viewport("full");
+    //glViewport(0,0,1920,1080);
 
     glClearColor(0.2f,0.3f,0.3f,1.0f);
 //-----------------

@@ -2,6 +2,7 @@
 #include "engproj/gl_utils/window.hpp"
 #include "engproj/gl_utils/context.hpp"
 #include <glad/glad.h>
+#include <engproj/gl_utils/viewport.hpp>
 #include "SDL3/SDL.h"//this is used!!
 using namespace engproj::gl_utils;
 
@@ -9,11 +10,6 @@ using namespace engproj::gl_utils;
 //comnmands queed in driver, binded textures
 struct engproj::gl_utils::context::context_PIMPL{
   SDL_GLContext context_;
-  bool valid(){
-    if(!context_){
-      return false;
-    }else{return true;}
-  }
 };
 
 //----------------------
@@ -36,6 +32,15 @@ context::context(std::shared_ptr<window> window_ptr, std::shared_ptr<context> co
     context_->context_ = SDL_GL_CreateContext((SDL_Window*)window_ptr->get_window_ptr());
   }
   window_ = window_ptr;
+
+  viewport_map_.emplace("full",viewport(0.0,0.0,1.0,1.0));
+  viewport_map_.emplace("top_right_quarter",viewport(0.5,0.5,0.5,0.5));
+  viewport_map_.emplace("bottom_left_quarter",viewport(0,0,0.5,0.5));
+
+  state_.viewport_ = "full";
+  state_.depth_test = false;
+  state_.scissor_test_ = false;
+
 }
 
 context::~context(){
@@ -57,8 +62,40 @@ void* context::get_context_ptr(){
 
 
 
-bool context::isvalid(){
+bool context::isvalid() const{
   if(!(context_->context_ && window_->isvalid())){
     return false;
   }else{return true;}
 }
+
+int context::activate_viewport(std::string viewportname){
+  if(state_.viewport_ == viewportname){
+      return 0;
+  }else {
+    if(viewport_map_.find(viewportname) != viewport_map_.end()){
+      const viewport& temp = viewport_map_[viewportname];
+      const auto& windowprops = window_->getprops();
+      glViewport(temp.x_*windowprops.width_,temp.y_*windowprops.height_,temp.x2_*windowprops.width_,temp.y2_*windowprops.height_);
+      state_.viewport_=viewportname;
+      return 0;
+    } else{
+      return -1;
+    }
+  }
+}
+
+
+int context::scissor_viewport(){
+  const viewport& temp = viewport_map_[state_.viewport_];
+  const auto& windowprops = window_->getprops();
+  glScissor(temp.x_*windowprops.width_,temp.y_*windowprops.height_,temp.x2_*windowprops.width_,temp.y2_*windowprops.height_);
+  return 0;
+}
+
+
+
+/*
+  int activate_viewport(std::string,bool enable_scissor=true);
+  void deactivate_viewport();
+  void add_viewport(std::string,viewport);
+*/

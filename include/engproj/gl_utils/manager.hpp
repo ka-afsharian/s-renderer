@@ -10,15 +10,8 @@
 
 namespace engproj::gl_utils{
 
-class renderer{
-public:
-  renderer(std::shared_ptr<context> context);
-  ~renderer();
-private:
-  std::shared_ptr<context> context_; //context its bound to, each renderer can only have 1 context
-};
 
-class manager : public std::enable_shared_from_this<manager>{//shared from this allows class to give shared ptrs of itself
+class manager : public std::enable_shared_from_this<manager>{//shared from this allows class to give shared ptrs of itself//must be created using make shared
 public:
 
   struct hardware_props{

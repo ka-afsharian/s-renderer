@@ -10,9 +10,7 @@ using namespace engproj::gl_utils;
 using namespace engproj::sdl_utils;
 
 manager::manager() : hardware_props_(), initial(false){
-  //hardware_props_->gl_renderer = //glGetString(GL_VENDOR);
  //init(); DO NOT CALL INIT IN CONSTRUCTOR, constructor must finish so shared_from_this can work!!!
-
 }
 
 
@@ -26,7 +24,6 @@ int manager::init(){
     auto mywindow= std::make_shared<window>("BLAH BLAH",1920,1080,std::vector<window::flags>{window::flags::opengl,window::flags::resizable},
                                             shared_from_this());
     auto mycontext = std::make_shared<engproj::gl_utils::context>(mywindow);
-
 
     if (mycontext->isvalid() && mywindow->isvalid()){
       context_map_["main"] = mycontext;

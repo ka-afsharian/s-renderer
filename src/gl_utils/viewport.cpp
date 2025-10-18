@@ -9,6 +9,9 @@ using namespace engproj::gl_utils;
 viewport::viewport(const float x,const float y,const float x2,const float y2) : x_(x),y_(y),x2_(x2),y2_(y2){
 
 }
+viewport::viewport() : x_(0),y_(0),x2_(0),y2_(0){
+
+}
 
 float viewport::get_aspect_ratio(){
   if(!is_valid()) return 1.0f;

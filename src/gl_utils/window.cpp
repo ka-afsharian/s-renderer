@@ -9,11 +9,6 @@ using namespace engproj::gl_utils;
 
 struct engproj::gl_utils::window::window_PIMPL{
   SDL_Window* window_;
-  bool valid(){
-    if(!window_){
-      return false;
-    }else{return true;}
-  }
 };
 
 window::window(const std::string title,size_t width, size_t height,std::vector<flags> flags_par,std::shared_ptr<manager> manager)
