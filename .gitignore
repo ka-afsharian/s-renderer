@@ -1,0 +1,5 @@
+/buildtree/
+/.cache/
+/third_party/SDLz/
+/bin/RELEASE/*
+/bin/DEBUG/*
