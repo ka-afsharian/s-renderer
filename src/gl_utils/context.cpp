@@ -51,7 +51,7 @@ int context::makecurrent(){
   return 0;
 }
 
-void* context::getptr(){
+void* context::get_context_ptr(){
   return context_->context_;
 }
 

@@ -7,7 +7,7 @@ using namespace engproj::gl_utils;
 //each context has its own bindings, current pipeline?,vao bidnings, framebufferbinding, states blend depth stencil, viewport
 //comnmands queed in driver, binded textures
 
-struct engproj::gl_utils::window_PIMPL{
+struct engproj::gl_utils::window::window_PIMPL{
   SDL_Window* window_;
   bool valid(){
     if(!window_){
@@ -57,9 +57,6 @@ window::~window(){
   SDL_DestroyWindow(window_->window_);
 }
 
-void* window::getptr(){
-  return window_->window_;
-}
 
 bool window::isvalid(){
   if(!(window_->window_)){
