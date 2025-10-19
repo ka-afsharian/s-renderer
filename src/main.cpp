@@ -155,7 +155,7 @@ int main(){
 
 
 
-
+    int height,width;//for sdl window size change
 
     glProgramUniform1i(fsid,glGetUniformLocation(fsid,"material.diffuse"),0);
     glProgramUniform1i(fsid,glGetUniformLocation(fsid,"material.specular"),1);
@@ -167,7 +167,16 @@ int main(){
 
         SDL_Event e;
         while (SDL_PollEvent(&e)){
-              if (e.type == SDL_EVENT_QUIT) running = false;
+          if (e.type == SDL_EVENT_QUIT){
+            running = false;
+          }else if(e.type == SDL_EVENT_WINDOW_RESIZED){
+            SDL_GetWindowSize((SDL_Window*)context->window_->get_window_ptr(),&width,&height);
+            context->window_->set_height(height);
+            context->window_->set_width(width);
+            context->refresh_viewport();
+          }
+
+
         }
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

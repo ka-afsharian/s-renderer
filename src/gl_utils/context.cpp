@@ -84,6 +84,12 @@ int context::activate_viewport(std::string viewportname){
   }
 }
 
+void context::refresh_viewport(){
+  const viewport& temp = viewport_map_[state_.viewport_];
+  const auto& windowprops = window_->getprops();
+  glViewport(temp.x_*windowprops.width_,temp.y_*windowprops.height_,temp.x2_*windowprops.width_,temp.y2_*windowprops.height_);
+}
+
 
 int context::scissor_viewport(){
   const viewport& temp = viewport_map_[state_.viewport_];

@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <memory>
+#include <shared_mutex>
 #include <vector>
 
 namespace engproj::gl_utils{
@@ -31,11 +32,15 @@ public:
   const props& getprops() const;
   bool isvalid();
   void* get_window_ptr();
+  void set_height(uint32_t height);
+  void set_width(uint32_t width);
+  void set_title(std::string);
 private:
   struct window_PIMPL;
   std::unique_ptr<window_PIMPL> window_;
   std::shared_ptr<manager> manager_;
   props props_;
+  mutable std::shared_mutex mtx_;
 };
 
 }

@@ -80,7 +80,6 @@ class shader_stage{
         int load_file(std::filesystem::path path);
         int load_string(std::string source);
 
-      protected:
         std::string compile_log_;
         std::string link_log_;
         std::string source_;

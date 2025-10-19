@@ -27,6 +27,7 @@ public:
   int scissor_viewport();
   void deactivate_viewport();
   void add_viewport(std::string,viewport);
+  void refresh_viewport();
   std::shared_ptr<window> window_;//points to window its bound,  can only have 1
 private:
   struct context_PIMPL;

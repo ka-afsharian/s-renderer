@@ -1,6 +1,7 @@
 #include <iostream>
 #include "engproj/gl_utils/manager.hpp"
 #include <glad/glad.h>
+#include <mutex>
 #include "SDL3/SDL.h"//this is used!!
 using namespace engproj::gl_utils;
 
@@ -63,9 +64,24 @@ void window::swap(){
   SDL_GL_SwapWindow(window_->window_);
 }
 const window::props& window::getprops() const{
+  std::shared_lock lock(mtx_);
   return props_;
 }
 
 void* window::get_window_ptr(){
   return window_->window_;
+}
+
+void window::set_height(uint32_t height){
+  std::unique_lock lock(mtx_);
+  props_.height_ = height;
+}
+void window::set_width(uint32_t width){
+  std::unique_lock lock(mtx_);
+  props_.width_ = width;
+}
+
+void window::set_title(const std::string title){
+  std::unique_lock lock(mtx_);
+  props_.title_ = title;
 }

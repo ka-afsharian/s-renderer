@@ -29,6 +29,8 @@ add_subdirectory(third_party/stb)
 #set SOURCES to all cpp files in src
 file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp"
                   "${PROJECT_SOURCE_DIR}/src/gl_utils/*.cpp"
+                  "${PROJECT_SOURCE_DIR}/src/gl_utils/renderer/*.cpp"
+                  "${PROJECT_SOURCE_DIR}/src/gl_utils/workers/*.cpp"
                   "${PROJECT_SOURCE_DIR}/src/sdl_utils/*.cpp"
                   "${PROJECT_SOURCE_DIR}/src/data_structures/*.cpp")
 
