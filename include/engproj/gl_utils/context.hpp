@@ -27,8 +27,8 @@ public:
   int scissor_viewport();
   void deactivate_viewport();
   void add_viewport(std::string,viewport);
-  void refresh_viewport();
-  std::shared_ptr<window> window_;//points to window its bound,  can only have 1
+  int refresh_viewport();//applys viewport again from current viewport state
+  std::shared_ptr<window> window_;//points to window its bound,  can only have 1//unfortunately public
 private:
   struct context_PIMPL;
   std::unique_ptr<context_PIMPL> context_;//actual context data for SDL3

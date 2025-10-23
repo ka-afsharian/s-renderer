@@ -79,14 +79,13 @@ class shader_stage{
         std::filesystem::path path_;
         int load_file(std::filesystem::path path);
         int load_string(std::string source);
-
         std::string compile_log_;
         std::string link_log_;
         std::string source_;
         bool is_valid_ = false;
         bool source_valid_ = false;
-        class gluint_PIMPL;
-        std::unique_ptr<gluint_PIMPL> id_;
+        class shader_PIMPL;
+        std::unique_ptr<shader_PIMPL> id_;
         const type stage_type_;
         std::optional<std::vector<bufferreflection>> ubo_reflection_;
         std::optional<std::vector<bufferreflection>> ssbo_reflection_;

@@ -155,7 +155,7 @@ int main(){
 
 
 
-    int height,width;//for sdl window size change
+    int height=1080,width=1920;//for sdl window size change
 
     glProgramUniform1i(fsid,glGetUniformLocation(fsid,"material.diffuse"),0);
     glProgramUniform1i(fsid,glGetUniformLocation(fsid,"material.specular"),1);
@@ -192,12 +192,12 @@ int main(){
 
 
         glProgramUniform1f(fsid,glGetUniformLocation(fsid,"material.shininess"),64.0f);
-        glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)1920 / (float)1080, 0.1f, 100.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
         glm::mat4 view = viewmatrix;
         glProgramUniformMatrix4fv(vsid,glGetUniformLocation(vsid,"projection"),1,GL_FALSE,&projection[0][0]);
         glProgramUniformMatrix4fv(vsid,glGetUniformLocation(vsid,"view"),1,GL_FALSE,&view[0][0]);
         glm::mat4 model = glm::mat4(1.0f);
-        float time = static_cast<float>(SDL_GetTicks())/10000.0f;
+        float time = static_cast<float>(SDL_GetTicks())/100.0f;
         model = glm::rotate(model,time,glm::vec3(0.0f,1.0f,1.0f));
         model = glm::rotate(model,time,glm::vec3(-1.0f,0.0f,1.0f));
         glProgramUniformMatrix4fv(vsid,glGetUniformLocation(vsid,"model"),1,GL_FALSE,&model[0][0]);

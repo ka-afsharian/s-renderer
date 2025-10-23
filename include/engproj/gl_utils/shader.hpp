@@ -22,7 +22,7 @@ struct default_loader{
     engproj::gl_utils::shader_stage::type type_;
     if(string.ends_with("vs")){
       type_=engproj::gl_utils::shader_stage::type::vertex;
-    }else{
+    }else{//expand on this later to support different shaders
       type_=engproj::gl_utils::shader_stage::type::fragment;
     }
     return std::make_shared<engproj::gl_utils::shader_stage>(type_,std::filesystem::path("../data/shaders/"+string));
@@ -98,7 +98,7 @@ private:
   bool add_compiled(std::string,stage_ptr);//adds a shader to compiled (helper function)
 };
 
-
+//---------------------------------------------------
 class pipeline_mngr;//forward dec
 
 class pipeline{
@@ -109,7 +109,7 @@ public:
   explicit pipeline();
   ~pipeline();
   bool use();
-  uint32_t get_stage_id(shader_stage::type);
+  uint32_t get_stage_id(shader_stage::type) const;
   size_t get_source_size() const;
   size_t get_stage_size(shader_stage::type) const;
   bool use_stage(engproj::gl_utils::shader_stage::type,stage_ptr);

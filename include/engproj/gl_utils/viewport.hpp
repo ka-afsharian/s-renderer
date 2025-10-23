@@ -9,7 +9,7 @@ public:
   viewport();
   float get_aspect_ratio();
   bool is_valid() const;
-  float x_,y_,x2_,y2_;
+  float x_,y_,x2_,y2_;//public unfortunately
 private:
 };
 

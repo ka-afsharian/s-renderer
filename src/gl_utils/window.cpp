@@ -12,7 +12,7 @@ struct engproj::gl_utils::window::window_PIMPL{
   SDL_Window* window_;
 };
 
-window::window(const std::string title,size_t width, size_t height,std::vector<flags> flags_par,std::shared_ptr<manager> manager)
+window::window(const std::string title,const size_t width,const size_t height,const std::vector<flags>& flags_par,std::shared_ptr<manager> manager)
                  : window_(std::make_unique<window_PIMPL>()), manager_(manager){
   SDL_WindowFlags flags_fin = 0;
   for(auto& e : flags_par){
@@ -72,11 +72,11 @@ void* window::get_window_ptr(){
   return window_->window_;
 }
 
-void window::set_height(uint32_t height){
+void window::set_height(const uint32_t height){
   std::unique_lock lock(mtx_);
   props_.height_ = height;
 }
-void window::set_width(uint32_t width){
+void window::set_width(const uint32_t width){
   std::unique_lock lock(mtx_);
   props_.width_ = width;
 }

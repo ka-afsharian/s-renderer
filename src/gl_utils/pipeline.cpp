@@ -26,10 +26,10 @@ pipeline::~pipeline(){
   glDeleteProgramPipelines(1,&id_->value);
 }
 
-uint32_t pipeline::get_stage_id(shader_stage::type stage_type){
-auto ptr = pipeline_[stage_type];
-if(ptr){
-  return ptr->getid();
+uint32_t pipeline::get_stage_id(shader_stage::type stage_type) const{
+auto it =  pipeline_.find(stage_type);
+if(it->second){
+  return it->second->getid();
 }else{return 0;}
 }
 

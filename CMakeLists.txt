@@ -30,8 +30,9 @@ add_subdirectory(third_party/stb)
 file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp"
                   "${PROJECT_SOURCE_DIR}/src/gl_utils/*.cpp"
                   "${PROJECT_SOURCE_DIR}/src/gl_utils/renderer/*.cpp"
-                  "${PROJECT_SOURCE_DIR}/src/gl_utils/workers/*.cpp"
+                  "${PROJECT_SOURCE_DIR}/src/gl_utils/passes/*.cpp"
                   "${PROJECT_SOURCE_DIR}/src/sdl_utils/*.cpp"
+                  "${PROJECT_SOURCE_DIR}/src/thread_pool/*.cpp"
                   "${PROJECT_SOURCE_DIR}/src/data_structures/*.cpp")
 
 

@@ -11,14 +11,14 @@
 using namespace engproj::gl_utils;
 
 
-class shader_stage::gluint_PIMPL{//this is to prevent namespace pollution from c library in header
+class shader_stage::shader_PIMPL{//this is to prevent namespace pollution from c library in header
       public:
-      GLuint value = 0;
+      GLuint value = 0; //woops no underscore, whats done is done
 };
 
 
-shader_stage::shader_stage(const type stage_type, std::filesystem::path path) : stage_type_(stage_type){
-    id_ = std::make_unique<gluint_PIMPL>();
+shader_stage::shader_stage(const type stage_type, std::filesystem::path path) : stage_type_(stage_type){//fix initializer list l8r
+    id_ = std::make_unique<shader_PIMPL>();
     id_->value = 0;
     if(load_file(path)==-1){
         source_valid_ = false;
@@ -28,7 +28,7 @@ shader_stage::shader_stage(const type stage_type, std::filesystem::path path) : 
 };
 
 shader_stage::shader_stage(const type stage_type, std::string string) : stage_type_(stage_type){
-    id_ = std::make_unique<gluint_PIMPL>();
+    id_ = std::make_unique<shader_PIMPL>();
     id_->value = 0;
     if(load_string(string)==-1){
         source_valid_ = false;
@@ -301,7 +301,7 @@ std::optional<std::vector<bufferreflection>> shader_stage::reflect(buffertype in
         node = &node->nested[key];
         node->name = key;
       }
-      node->fields.push_back(field);
+      node->fields.push_back(std::move(field));
     }
 
     //std::cout << "------------" << std::endl;
@@ -311,7 +311,7 @@ std::optional<std::vector<bufferreflection>> shader_stage::reflect(buffertype in
   if(result.empty()){
     return std::nullopt;
   }
-  return result;
+  return result;//can this be optimized
 
 }
 
