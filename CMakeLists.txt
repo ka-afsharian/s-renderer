@@ -33,6 +33,7 @@ file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp"
                   "${PROJECT_SOURCE_DIR}/src/gl_utils/passes/*.cpp"
                   "${PROJECT_SOURCE_DIR}/src/sdl_utils/*.cpp"
                   "${PROJECT_SOURCE_DIR}/src/thread_pool/*.cpp"
+                  "${PROJECT_SOURCE_DIR}/src/logger/*.cpp"
                   "${PROJECT_SOURCE_DIR}/src/data_structures/*.cpp")
 
 

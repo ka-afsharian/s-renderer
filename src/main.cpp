@@ -17,6 +17,7 @@
 //#include <string>
 #include "engproj/gl_utils/shader_stage.hpp"
 #include "engproj/gl_utils/shader.hpp"
+#include "engproj/logger/logger.hpp"
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 #include <glm/glm.hpp>
@@ -26,6 +27,8 @@
 //#include <engproj/data_structures/boundedLRUmap.hpp>
 
 int main(){
+    engproj::logger::logger<engproj::logger::loglevel::debug> logger{};
+    logger.debug("{}","hello everyone");
     using namespace engproj::gl_utils;
     auto mainmngr = std::make_shared<manager>();
     mainmngr->init();

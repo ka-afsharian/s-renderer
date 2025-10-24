@@ -18,13 +18,12 @@ public:
   command_queue(command_queue&&) = delete;
   command_queue& operator=(command_queue&&) = delete;
 
-/*
   template<typename U>
   void push(U&& command){
     std::scoped_lock lock(mtx_);
     write_buffer_.emplace_back(std::forward<U>(command));
   }
-*/
+
   template<typename Vec>
   void push_commands(Vec&& commands){//consumes vector
     std::scoped_lock lock(mtx_);
