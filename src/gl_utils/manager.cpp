@@ -3,6 +3,7 @@
 #include "engproj/gl_utils/window.hpp"
 #include "engproj/gl_utils/context.hpp"
 #include "engproj/sdl_utils/sdl_init.hpp"
+#include "engproj/logger/logger.hpp"
 #include <glad/glad.h>
 #include "SDL3/SDL.h"//this is used!!
 #include <memory>
@@ -71,16 +72,21 @@ int manager::init(){
 }
 
 void manager::print_hardware_props(){
-    std::cout << "Renderer: " << hardware_props_.renderer  << "\n";
-    std::cout << "Vendor: " << hardware_props_.vendor << "\n";
-    std::cout << "Version: " << hardware_props_.version << "\n";
-    std::cout << "UBO Bindings: " << hardware_props_.max_ubo_bindings << "\n";
-    std::cout << "SSBO Bindings: " << hardware_props_.max_ssbo_bindings << "\n";
-    std::cout << "Texture Units: " << hardware_props_.max_combined_texture_image_units << "\n";
-    std::cout << "Max Samples: " << hardware_props_.max_samples << "\n";
-    std::cout << "Supported gl extensions: " << "\n";
+  logger::g_logger.info("Renderer: {}\nVendor: {}\nVersion: {}\nUBO Bindings: {}\nSSBO Bindings: {}\nTexture Units: {}\nMax Samples: {}",
+                        hardware_props_.renderer,hardware_props_.vendor,hardware_props_.version,hardware_props_.max_ubo_bindings
+                        ,hardware_props_.max_ssbo_bindings,hardware_props_.max_combined_texture_image_units
+                        ,hardware_props_.max_samples);
+    //std::cout << "Renderer: " << hardware_props_.renderer  << "\n";
+    //std::cout << "Vendor: " << hardware_props_.vendor << "\n";
+    //std::cout << "Version: " << hardware_props_.version << "\n";
+    //std::cout << "UBO Bindings: " << hardware_props_.max_ubo_bindings << "\n";
+    //std::cout << "SSBO Bindings: " << hardware_props_.max_ssbo_bindings << "\n";
+    //std::cout << "Texture Units: " << hardware_props_.max_combined_texture_image_units << "\n";
+    //std::cout << "Max Samples: " << hardware_props_.max_samples << "\n";
+    //std::cout << "Supported gl extensions: " << "\n";
     for(auto& e : hardware_props_.gl_supported_extensions){
-      std::cout << e << "\n";
+      logger::g_logger.info("Supported Extension: {}",e);
+      //std::cout << e << "\n";
     }
 }
 

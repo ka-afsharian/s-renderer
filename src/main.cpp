@@ -27,8 +27,7 @@
 //#include <engproj/data_structures/boundedLRUmap.hpp>
 
 int main(){
-    engproj::logger::logger<engproj::logger::loglevel::debug> logger{};
-    logger.debug("{}","hello everyone");
+    //engproj::logger::logger<engproj::logger::loglevel::debug> logger{"main"};
     using namespace engproj::gl_utils;
     auto mainmngr = std::make_shared<manager>();
     mainmngr->init();
