@@ -1,6 +1,6 @@
 #pragma once
 
-#include "buffertype.hpp"
+#include "engproj/gl_utils/buffertype.hpp"
 
 #include <cstdint>
 

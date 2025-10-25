@@ -72,15 +72,16 @@ int manager::init(){
 }
 
 void manager::print_hardware_props(){
-  logger::g_logger.info("Renderer: {}",hardware_props_.renderer);
-  logger::g_logger.info("Vendor: {}",hardware_props_.vendor);
-  logger::g_logger.info("Version: {}",hardware_props_.version);
-  logger::g_logger.info("UBO Bindings: {}",hardware_props_.max_ubo_bindings);
-  logger::g_logger.info("SSBO Bindings: {}",hardware_props_.max_ssbo_bindings);
-  logger::g_logger.info("Texture Units: {}",hardware_props_.max_combined_texture_image_units);
-  logger::g_logger.info("Max Samples: {}",hardware_props_.max_samples);
+  using namespace engproj::logger;
+  g_logger.info("Renderer: {}",hardware_props_.renderer);
+  g_logger.info("Vendor: {}",hardware_props_.vendor);
+  g_logger.info("Version: {}",hardware_props_.version);
+  g_logger.info("UBO Bindings: {}",hardware_props_.max_ubo_bindings);
+  g_logger.info("SSBO Bindings: {}",hardware_props_.max_ssbo_bindings);
+  g_logger.info("Texture Units: {}",hardware_props_.max_combined_texture_image_units);
+  g_logger.info("Max Samples: {}",hardware_props_.max_samples);
     for(auto& e : hardware_props_.gl_supported_extensions){
-      logger::g_logger.info("Supported Extension: {}",e);
+      g_logger.info("Supported Extension: {}",e);
     }
 }
 

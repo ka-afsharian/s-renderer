@@ -1,7 +1,5 @@
 #include "engproj/gl_utils/shader.hpp"
 #include "engproj/logger/logger.hpp"
-#include <iostream>
-
 
 using namespace engproj::gl_utils;
 
