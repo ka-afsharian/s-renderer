@@ -1,4 +1,3 @@
-#include <iostream>
 #include "engproj/gl_utils/manager.hpp"
 #include "engproj/gl_utils/window.hpp"
 #include "engproj/gl_utils/context.hpp"
@@ -9,6 +8,7 @@
 #include <memory>
 using namespace engproj::gl_utils;
 using namespace engproj::sdl_utils;
+using namespace engproj::logger;
 
 manager::manager() : hardware_props_(), initial(false){
  //init(); DO NOT CALL INIT IN CONSTRUCTOR, constructor must finish so shared_from_this can work!!!
@@ -35,7 +35,7 @@ int manager::init(){
       return -1;
     }
     if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) {
-        fprintf(stderr, "Failed to initialize OpenGL context\n");
+        g_logger.debug("Failed to initialize OpenGL context");
         SDL_Quit();
         return -1;
     }
@@ -72,21 +72,15 @@ int manager::init(){
 }
 
 void manager::print_hardware_props(){
-  logger::g_logger.info("Renderer: {}\nVendor: {}\nVersion: {}\nUBO Bindings: {}\nSSBO Bindings: {}\nTexture Units: {}\nMax Samples: {}",
-                        hardware_props_.renderer,hardware_props_.vendor,hardware_props_.version,hardware_props_.max_ubo_bindings
-                        ,hardware_props_.max_ssbo_bindings,hardware_props_.max_combined_texture_image_units
-                        ,hardware_props_.max_samples);
-    //std::cout << "Renderer: " << hardware_props_.renderer  << "\n";
-    //std::cout << "Vendor: " << hardware_props_.vendor << "\n";
-    //std::cout << "Version: " << hardware_props_.version << "\n";
-    //std::cout << "UBO Bindings: " << hardware_props_.max_ubo_bindings << "\n";
-    //std::cout << "SSBO Bindings: " << hardware_props_.max_ssbo_bindings << "\n";
-    //std::cout << "Texture Units: " << hardware_props_.max_combined_texture_image_units << "\n";
-    //std::cout << "Max Samples: " << hardware_props_.max_samples << "\n";
-    //std::cout << "Supported gl extensions: " << "\n";
+  logger::g_logger.info("Renderer: {}",hardware_props_.renderer);
+  logger::g_logger.info("Vendor: {}",hardware_props_.vendor);
+  logger::g_logger.info("Version: {}",hardware_props_.version);
+  logger::g_logger.info("UBO Bindings: {}",hardware_props_.max_ubo_bindings);
+  logger::g_logger.info("SSBO Bindings: {}",hardware_props_.max_ssbo_bindings);
+  logger::g_logger.info("Texture Units: {}",hardware_props_.max_combined_texture_image_units);
+  logger::g_logger.info("Max Samples: {}",hardware_props_.max_samples);
     for(auto& e : hardware_props_.gl_supported_extensions){
       logger::g_logger.info("Supported Extension: {}",e);
-      //std::cout << e << "\n";
     }
 }
 

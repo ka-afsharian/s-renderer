@@ -1,6 +1,6 @@
 #include "engproj/gl_utils/shader.hpp"
 #include <glad/glad.h>
-#include <iostream>
+#include "engproj/logger/logger.hpp"
 using namespace engproj::gl_utils;
 
 
@@ -92,32 +92,40 @@ std::optional<stage_ptr> pipeline::get_stage_ptr(shader_stage::type ty){
 }
 
 void pipeline::printstruct(const structnode& node, int indent){
+    using namespace engproj::logger;
     std::string pad(indent, ' ');
     for (auto& field : node.fields) {
-        std::cout << pad << "- " << field.name
-                  << " (offset=" << field.offset
-                  << ", type=" << field.type << " , arraysize= " << field.arraysize
-                  << " , arraystride= " << field.arraystride << " , matrixstride= " << field.matrixstride <<")\n";
+        //std::cout << pad << "- " << field.name
+        //          << " (offset=" << field.offset
+        //          << ", type=" << field.type << " , arraysize= " << field.arraysize
+        //          << " , arraystride= " << field.arraystride << " , matrixstride= " << field.matrixstride <<")\n";
+        g_logger.debug("{}- {} (offset={}, type={} , arraysize= {} , arraystride= {} , matrixstride= {})"
+                       ,pad,field.name,field.offset,field.type,field.arraysize,field.arraystride,field.matrixstride);
     }
     for (auto& kv : node.nested) {
-        std::cout << pad << "Struct: " << kv.first << "\n";
+        //std::cout << pad << "Struct: " << kv.first << "\n";
+        g_logger.debug("{}Struct: {}",pad,kv.first);
         printstruct(kv.second, indent + 2);
     }
 }
 void pipeline::printubos(){
+    using namespace engproj::logger;
     for (auto& ubo : uboreflections_) {
-        std::cout << "UBO: " << ubo.name
-                  << " (binding=" << ubo.binding
-                  << ", size=" << ubo.datasize << ")\n";
+        //std::cout << "UBO: " << ubo.name
+        //          << " (binding=" << ubo.binding
+        //          << ", size=" << ubo.datasize << ")\n";
+        g_logger.debug("UBO: {} (binding={}, size={})",ubo.name,ubo.binding,ubo.datasize);
         printstruct(ubo.root, 2);
     }
 }
 
 void pipeline::printssbos(){
+    using namespace engproj::logger;
     for (auto& ssbo : ssboreflections_) {
-        std::cout << "SSBO: " << ssbo.name
-                  << " (binding=" << ssbo.binding
-                  << ", size=" << ssbo.datasize << ")\n";
+        //std::cout << "SSBO: " << ssbo.name
+        //          << " (binding=" << ssbo.binding
+        //          << ", size=" << ssbo.datasize << ")\n";
+        g_logger.debug("SSBO: {} (binding={}, size={})",ssbo.name,ssbo.binding,ssbo.datasize);
         printstruct(ssbo.root, 2);
     }
 }

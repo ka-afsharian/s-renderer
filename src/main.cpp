@@ -58,8 +58,8 @@ int main(){
     auto mappipeline = pipemngr.add("mappipeline",{{shader_stage::type::vertex,"lighting_maps.vs"},{shader_stage::type::fragment,"lighting_maps.fs"}});
     auto cubepipeline = pipemngr.add("cubepipeline",{{shader_stage::type::vertex,"light_cube.vs"},{shader_stage::type::fragment,"light_cube.fs"}});
     if(mappipeline){
-        std::cout <<"VALID" << std::endl;
-    }else{std::cout << "INVALID" << std::endl;}
+      engproj::logger::g_logger.debug("VALID");
+    }else{engproj::logger::g_logger.debug("INVALID");}
 
     auto vsid = (*mappipeline)->get_stage_id(shader_stage::type::vertex);
     auto fsid = (*mappipeline)->get_stage_id(shader_stage::type::fragment);
@@ -69,8 +69,7 @@ int main(){
     mngr->cleanup();
     mngr->get_stats();
     mngr->debug_print();
-    std::cout << "mappipelines size: " << (*mappipeline)->get_source_size()<<std::endl;;
-    //auto reflection = (*(*mappipeline)->get_stage_ptr(shader_stage::type::fragment))->reflect();
+    //engproj::logger::g_logger.debug("mappipelines size: {}",(*mappipeline)->get_source_size());
     (*mappipeline)->printubos();
     (*mappipeline)->printssbos();
 

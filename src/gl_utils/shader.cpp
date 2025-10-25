@@ -1,4 +1,5 @@
 #include "engproj/gl_utils/shader.hpp"
+#include "engproj/logger/logger.hpp"
 #include <iostream>
 
 
@@ -155,8 +156,8 @@ void shader_stage_mngr::reset_stats(){
 }
 
 void shader_stage_mngr::get_stats(){
-  std::cout << "hits: " << stats_.hits << "\n";
-  std::cout << "misses: " << stats_.misses << std::endl;
+  using namespace engproj::logger;
+  g_logger.debug("Cache hits: {}, Cache misses: {}",stats_.hits,stats_.misses);
 }
 
 void shader_stage_mngr::resize_compiled_cache(std::size_t new_capacity){
@@ -193,51 +194,35 @@ std::size_t shader_stage_mngr::get_size() const{
 
 
 void shader_stage_mngr::debug_print(){
-  std::cout << "Total cache count:" << get_count() << std::endl;
-  std::cout << "Total cache use: " << get_size() << std::endl;
-  std::cout << "---------------" <<std::endl;
-  std::cout << "Compiled cache:" << std::endl;
-  std::cout << "Compiled cache count: " << get_compiled_cache_count() << std::endl;
-  std::cout << "Compiled cache size: " << get_compiled_cache_size() << std::endl;
-  std::cout << "Contents:" << std::endl;
+  using namespace engproj::logger;
+  g_logger.debug("Total cache count: {}",get_count());
+  g_logger.debug("total cache use: {}",get_size());
+  g_logger.debug("Compiled cache: ");
+  g_logger.debug("Compiled cache count: {}",get_compiled_cache_count());
+  g_logger.debug("Compiled cache size: {}",get_compiled_cache_size());
+  g_logger.debug("Contents: ");
   for(auto ptr = stages_.begin();ptr != stages_.end();ptr++){
-    std::cout << "name: " << ptr.key() << "\n";
-    std::cout << "size " << (*ptr)->get_source_size() << std::endl;
+    g_logger.debug("name: {}, size: {}",ptr.key(),(*ptr)->get_source_size());
   }
-  std::cout << "---------------" <<std::endl;
 
-  std::cout << "Uncompiled cache:" << std::endl;
-  std::cout << "Uncompiled cache count: " << get_uncompiled_cache_count() << std::endl;
-  std::cout << "Uncompiled cache size: " << get_uncompiled_cache_size() << std::endl;
-  std::cout << "Contents:" << std::endl;
+  g_logger.debug("Uncompiled cache: ");
+  g_logger.debug("Uncompiled cache count: {}",get_uncompiled_cache_count());
+  g_logger.debug("Uncompiled cache size: {}",get_uncompiled_cache_size());
+  g_logger.debug("Contents: ");
   for(auto ptr = uncompiled_stages_.begin();ptr != uncompiled_stages_.end();ptr++){
-    std::cout << "name: " << ptr.key() << "\n";
-    std::cout << "size " << (*ptr)->get_source_size() << std::endl;
+    g_logger.debug("name: {}, size: {}",ptr.key(),(*ptr)->get_source_size());
   }
-  std::cout << "---------------" <<std::endl;
 
-  std::cout << "Permanent cache:" << std::endl;
-  std::cout << "Permanent cache count: " << permanent_stages_.size() << std::endl;
-  std::cout << "Permanent cache size: " << get_permanent_cache_size() << std::endl;
-  std::cout << "Contents:" << std::endl;
+  g_logger.debug("Permanent cache: ");
+  g_logger.debug("Permanent cache count: {}",permanent_stages_.size());
+  g_logger.debug("Permanent cache size: {}", get_permanent_cache_size());
+  g_logger.debug("Contents: ");
   for(auto& e : permanent_stages_){
-    std::cout << "name: " << e.first << "\n";
-    std::cout << "size " << e.second->get_source_size() << std::endl;
+    g_logger.debug("name: {}, size: {}",e.first,e.second->get_source_size());
   }
+
 }
 
 
 
 
-/*
-private:
-  loader_type loader_;
-  cache_map stages_;
-  cache_map uncompiled_stages_;
-  std::map<std::string,stage_ptr> permanent_stages_;
-  size_t stage_capacity_;
-  size_t uncompiled_stage_capacity_;
-  map_stats stats_;
-
-};
-*/
