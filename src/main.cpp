@@ -18,6 +18,8 @@
 #include "engproj/gl_utils/shader_stage.hpp"
 #include "engproj/gl_utils/shader.hpp"
 #include "engproj/logger/logger.hpp"
+#include "engproj/engine/world.hpp"
+#include "engproj/engine/component/component.hpp"
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 #include <glm/glm.hpp>
