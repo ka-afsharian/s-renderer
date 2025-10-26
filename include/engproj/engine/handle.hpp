@@ -14,7 +14,6 @@ enum class handletype{
    material
 };
 
-//don't know whether to put this class in engine or glutils folder
 template<handletype T>
 struct handle{
   uint32_t id=0;

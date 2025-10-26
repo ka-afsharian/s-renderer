@@ -31,8 +31,7 @@ struct camera{
   float aspect;
   float znear;
   float zfar;
-  glm::mat4 view;
-  glm::mat4 proj;
+  glm::mat4 viewproj;//the previous stuff might not be neccessary if i keep this
 };
 
 
