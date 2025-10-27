@@ -3,6 +3,7 @@
 #include "engproj/engine/component/component.hpp"
 #include "engproj/engine/component/componentpool.hpp"
 #include "engproj/engine/handle.hpp"
+#include "engproj/engine/handle_mngr.hpp"
 #include "engproj/gl_utils/shader.hpp"
 
 #include <cstdint>
@@ -14,7 +15,7 @@ namespace engproj::engine{
 
 
 class world{
-  world();//parameter should be a resource manager
+  world(entity_hdl_mngr entity_manager) : entity_manager_(entity_manager){}
 
   entity_hdl create_entity();//use handle_mngr
   void destroy_entity(entity_hdl);//use handle_mngr
@@ -27,6 +28,7 @@ class world{
 
 
 private:
+  entity_hdl_mngr entity_manager_;
   componentpool<component::transform> transform_pool_;
   componentpool<component::camera> camera_pool_;
 

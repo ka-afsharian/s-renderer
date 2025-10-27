@@ -22,7 +22,7 @@ public:
 
   bool is_valid(engine::handle<T> handle){
     if(handle.id > max_id_ || handle.id == invalid_id_){
-      logger::e_logger.debug("Entity valid check false, handle_mngr class. Entity id:{}, gen:{}",handle.id,handle.gen);
+      logger::e_logger.debug("handle<T> valid check false, handle_mngr class. handle<T> id:{}, gen:{}",handle.id,handle.gen);
       return false;
     }
     return true;
@@ -32,5 +32,6 @@ private:
 };
 
 using entity_hdl_mngr = handle_mngr<engproj::engine::handletype::entity>;
+
 
 }
