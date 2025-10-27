@@ -2,4 +2,5 @@
 
 using namespace engproj::logger;
 
-logger<loglevel::debug> engproj::logger::g_logger{"global"};
+logger<loglevel::debug> engproj::logger::g_logger{"renderer"};
+logger<loglevel::debug> engproj::logger::e_logger{"engine"};

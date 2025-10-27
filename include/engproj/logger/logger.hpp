@@ -164,4 +164,5 @@ private:
 
 
 extern logger<loglevel::debug> g_logger;
+extern logger<loglevel::debug> e_logger;
 }
