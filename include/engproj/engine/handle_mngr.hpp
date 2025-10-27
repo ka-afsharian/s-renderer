@@ -11,7 +11,7 @@ namespace engproj::engine{
 template<engproj::engine::handletype T>
 struct handle_mngr{
 public:
-  static constexpr std::size_t max_entries = 65536;//could be even more?
+  static constexpr std::size_t max_entries = 65536;//could be even more? //this includes 0 which is invalid
 
 private:
 };

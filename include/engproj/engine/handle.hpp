@@ -14,10 +14,18 @@ enum class handletype{
    material
 };
 
+using handle_id_type = uint32_t;
+using handle_gen_type = uint32_t;
+
 template<handletype T>
 struct handle{
-  uint32_t id=0;
-  uint32_t gen=0;//generation
+  handle_id_type id=0;
+  handle_gen_type gen=0;//generation
+
+  handle(handle_id_type id_p,handle_gen_type gen_p){
+    id=id_p;
+    gen=gen_p;
+  }
 
   bool operator ==(const handle<T>& other) const{
     return id==other.id && gen==other.gen;
@@ -33,12 +41,10 @@ struct handle{
     }
   };
 
-  static const handle<T> invalid;
+  static inline const handle<T> invalid{0,0};
 
 };
 
-template<handletype T>
-const handle<T> handle<T>::invalid{0,0};
 
 //creating types
 using pipeline_hdl = engine::handle<handletype::pipeline>;

@@ -18,8 +18,8 @@ struct translate{
 };
 
 struct mesh{
-  engproj::engine::mesh_hdl mesh = engproj::engine::mesh_hdl::invalid;
-  engproj::engine::material_hdl material = engproj::engine::material_hdl::invalid;//mult entities share material so makes sense to have material as a handle
+  engproj::engine::mesh_hdl mesh;
+  engproj::engine::material_hdl material;//mult entities share material so makes sense to have material as a handle
   bool visible;
   bool cast_shadows=true;//maybe change this into a component
 };
