@@ -3,6 +3,7 @@ project(gltest)
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -DNDEBUG")
 set(CMAKE_BUILD_TYPE RELEASE)
 
 cmake_policy(SET CMP0072 NEW)

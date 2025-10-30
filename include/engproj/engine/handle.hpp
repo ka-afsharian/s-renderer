@@ -22,10 +22,13 @@ struct handle{
   handle_id_type id=0;
   handle_gen_type gen=0;//generation
 
-  handle(handle_id_type id_p,handle_gen_type gen_p){
-    id=id_p;
-    gen=gen_p;
+  handle(handle_id_type id_p,handle_gen_type gen_p) :id(id_p),gen(gen_p){
   }
+
+  handle(const handle&) = default;
+  handle(handle&&) noexcept = default;
+  handle& operator=(const handle&) = default;
+  handle& operator=(handle&&) noexcept = default;
 
   bool operator ==(const handle<T>& other) const{
     return id==other.id && gen==other.gen;

@@ -67,6 +67,7 @@ public:
   explicit logger(const std::string& name) : name_(name){
     static auto term_out = std::make_shared<termsink>();
     push_sink(term_out);
+    std::printf("Starting Logger [%s]\n",name_.c_str());
   }
 
   template<typename... Args>

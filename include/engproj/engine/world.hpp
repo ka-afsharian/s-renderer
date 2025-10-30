@@ -2,14 +2,10 @@
 
 #include "engproj/engine/component/component.hpp"
 #include "engproj/engine/component/componentpool.hpp"
+#include "engproj/engine/handle_mngr.hpp"
+#include "engproj/engine/component/view.hpp"
 #include "engproj/engine/handle.hpp"
 #include "engproj/engine/handle_mngr.hpp"
-#include "engproj/gl_utils/shader.hpp"
-
-#include <cstdint>
-#include <vector>
-#include <map>
-
 
 namespace engproj::engine{
 
@@ -23,21 +19,38 @@ class world{
 
   template<typename T,typename... Args>
   T& add_component(entity_hdl){
-
+    //implement
   }
+
+  template<typename... Components>
+  component::view<Components...> get_view(){
+    static_assert(sizeof...(Components) > 0, "View must have at least one component");
+    static_assert(are_valid_components<Components ...>(), "Invalid component type in view");
+
+    return component::view<Components ...>(get_pool<Components>()...);
+  }
+
+  template<typename... Components>
+  component::view<Components...> get_view() const{
+    static_assert(sizeof...(Components) > 0, "View must have at least one component");
+    static_assert(are_valid_components<Components ...>(), "Invalid component type in view");
+
+    return component::view<Components ...>(get_pool<Components>()...);
+  }
+
 
 
 private:
   entity_hdl_mngr entity_manager_;
-  componentpool<component::transform> transform_pool_;
-  componentpool<component::camera> camera_pool_;
-
-
-  template<typename T>
-  componentpool<T>& get_pool();//constexpr or not? idk
+  component::componentpool<component::transform> transform_pool_;
+  component::componentpool<component::camera> camera_pool_;
+  //you must add all the pools
 
   template<typename T>
-  const componentpool<T>& get_pool() const;
+  component::componentpool<T>& get_pool();//constexpr or not? idk
+
+  template<typename T>
+  const component::componentpool<T>& get_pool() const;
 
 
   template<typename T>
@@ -50,7 +63,7 @@ private:
 
 
 template<typename T>
-componentpool<T>& world::get_pool(){//constexpr or not? idk
+component::componentpool<T>& world::get_pool(){//constexpr or not? idk
   if constexpr(std::is_same_v<T,component::transform>){
     return transform_pool_;
   }
@@ -60,8 +73,8 @@ componentpool<T>& world::get_pool(){//constexpr or not? idk
 }
 
 template<typename T>
-const componentpool<T>& world::get_pool() const{
-  return const_cast<world*>(this)->get_pool<T>;
+const component::componentpool<T>& world::get_pool() const{//would this even work?
+  return const_cast<world*>(this)->get_pool<T>();
 }
 
 
@@ -78,7 +91,7 @@ constexpr bool world::is_valid_component(){
 
 template<typename... Components>
 constexpr bool world::are_valid_components(){
-  return (is_valid_components<Components>() && ...);
+  return (is_valid_component<Components>() && ...);
 }
 
 }

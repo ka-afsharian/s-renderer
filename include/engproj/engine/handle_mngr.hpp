@@ -4,9 +4,8 @@
 #include "engproj/engine/handle.hpp"
 #include "engproj/logger/logger.hpp"
 
-#include <algorithm>
-#include <cstdint>
 #include <numeric>
+#include <algorithm>
 namespace engproj::engine{
 
 
@@ -31,7 +30,7 @@ public:
 private:
 };
 
-using entity_hdl_mngr = handle_mngr<engproj::engine::handletype::entity>;
+using entity_hdl_mngr = handle_mngr<engine::handletype::entity>;
 
 
 }

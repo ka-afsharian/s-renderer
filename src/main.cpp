@@ -22,6 +22,7 @@
 #include "engproj/engine/component/component.hpp"
 #include "engproj/engine/component/componentpool.hpp"
 #include "engproj/engine/handle_mngr.hpp"
+#include "engproj/engine/component/iterator.hpp"
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 #include <glm/glm.hpp>
