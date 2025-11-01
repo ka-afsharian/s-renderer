@@ -8,7 +8,7 @@ class iterablerange{
 public:
   iterablerange(componentpool<component>& component_pool) : component_pool_(component_pool) {}
 
-  iterator<component> begin(){
+  iterator<component> begin(){//are non const even neccessary?
     return iterator<component>(0,component_pool_);
   }
 

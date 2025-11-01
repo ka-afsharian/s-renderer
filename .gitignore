@@ -2,4 +2,6 @@
 /.cache/
 /third_party/SDLz/
 /bin/RELEASE/*
+/bin/Release/*
 /bin/DEBUG/*
+/tests/Release/*

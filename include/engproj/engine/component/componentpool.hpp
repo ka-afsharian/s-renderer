@@ -111,6 +111,10 @@ public:
     return entities_[index] == entity; //if generation matches then entity already has component. also does checks id(redundant)
   }
 
+  void debug_print(){
+
+  }
+
 private:
   std::vector<T> components_;
   std::vector<entity_hdl> entities_;//this and components_ are always the same size and index of each are the same for the same component
