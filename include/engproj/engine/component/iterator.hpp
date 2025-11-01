@@ -33,20 +33,52 @@ private:
 };
 //----------------------------------------------------------
 template<typename... components>
-class iterator_multi{
+class iterator_multi{//this can't work with stl algos since only some indicies are valid
 public:
-  iterator_multi(size_t index,std::tuple<componentpool<components>&...> pools,std::vector<entity_hdl>& entities)
-       : index_(index),pools_(pools),entities_(entities){
-
+  iterator_multi(size_t index,std::tuple<componentpool<components>&...>& pools,std::vector<entity_hdl>& entities)
+       : pools_(pools),entities_(entities),index_(index),size_(entities_.size()){
+    if(index_<size_ && !all_pools_have_component(std::index_sequence_for<components...>{})){
+      next_valid();
+    }
   }
 
+  auto operator*(){
+    return std::tuple_cat(std::forward_as_tuple(entities_[index_]),
+                          std::forward_as_tuple(std::get<componentpool<components>>(pools_).get_component_no_check(entities_[index_])...));
+  }
+
+  iterator_multi& operator++(){
+    next_valid();
+    return *this;
+  }
+
+  bool operator ==(const iterator_multi& other) const {
+    return index_ == other.index_;
+  }
+  bool operator !=(const iterator_multi& other) const {
+    return !(*this == other);
+  }
 
 private:
   std::tuple<componentpool<components>&...> pools_;
-  std::vector<entity_hdl> entities_;
+  std::vector<entity_hdl>& entities_;
   size_t index_;
   size_t size_;
 
+  void next_valid(){
+    index_++;
+    while(index_<size_){
+      if(all_pools_have_component(std::index_sequence_for<components...>{})){
+        break;
+      }
+      index_++;
+    }
+  }
+
+  template<std::size_t... Is>
+  bool all_pools_have_component(std::index_sequence<Is...>) const{
+    return(... && std::get<Is>(pools_).has_component(entities_[index_]));
+  }
 
 };
 

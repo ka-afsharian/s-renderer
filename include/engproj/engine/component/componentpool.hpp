@@ -38,6 +38,15 @@ public:
     return components_.back();
   }
 
+  T& get_component_no_check(entity_hdl entity){//only use if you know entity has component
+    size_t index = entity_to_index_[entity.id];
+    return components_[index];
+  }
+  T& get_component_no_check(entity_hdl entity) const{
+    size_t index = entity_to_index_[entity.id];
+    return components_[index];
+  }
+
   std::optional<T&> get_component(entity_hdl entity){
     if(!has_component(entity)){
       return std::nullopt;
@@ -91,6 +100,16 @@ public:
     return entities_;
   }
 
+  bool has_component(const entity_hdl entity){
+    if(!entity_valid(entity) || !entity_within_sparse_size(entity)){//checks if entity is valid and possible to be in sparse
+      return false;
+    }
+    size_t index = entity_to_index_[entity.id];
+    if(index == invalid_index_){//checks if index isn't 0
+      return false;
+    }
+    return entities_[index] == entity; //if generation matches then entity already has component. also does checks id(redundant)
+  }
 
 private:
   std::vector<T> components_;
@@ -125,16 +144,6 @@ private:
     return true;
   }
 
-  bool has_component(const entity_hdl entity){
-    if(!entity_valid(entity) || !entity_within_sparse_size(entity)){//checks if entity is valid and possible to be in sparse
-      return false;
-    }
-    size_t index = entity_to_index_[entity.id];
-    if(index == invalid_index_){//checks if index isn't 0
-      return false;
-    }
-    return entities_[index] == entity; //if generation matches then entity already has component. also does checks id(redundant)
-  }
 
 };
 
