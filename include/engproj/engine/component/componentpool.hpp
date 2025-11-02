@@ -112,7 +112,11 @@ public:
   }
 
   void debug_print(){
-
+    logger::e_logger.debug("Printing componentpool:");
+    for(int i =0;i!=size();i++){
+      auto [entity,component] = std::pair(entities_[i],components_[i]);
+      //logger::e_logger.debug("Entity id:{}, gen:{}, Component data:{}",entity.id,entity.gen,component.debug_string());//impliment debug string
+    }
   }
 
 private:

@@ -5,5 +5,7 @@
 #include "engproj/engine/handle_mngr.hpp"
 #include "engproj/engine/component/iterator.hpp"
 #include "engproj/engine/component/iterablerange.hpp"
+using namespace engproj::engine;
 int main(){
+  //world myworld{};
 }
