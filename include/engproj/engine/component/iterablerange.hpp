@@ -60,13 +60,13 @@ public:
 
 private:
   std::tuple<componentpool<components>&...>& pools_;
-  std::vector<entity_hdl>* smallest_entities_;
+  const std::vector<entity_hdl>* smallest_entities_;
   size_t size_;
 
 
   template<std::size_t... Is>
   void set_smallest_entities_at_index(std::size_t index, std::index_sequence<Is ...>){
-    ((Is == index? smallest_entities_= &std::get<Is>(pools_).entities() : void() ),...);
+    ((Is == index? (smallest_entities_= &std::get<Is>(pools_).get_entities(),void()) : void() ),...);//idk why this works
   }
 
 };

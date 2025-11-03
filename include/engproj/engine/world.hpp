@@ -6,20 +6,47 @@
 #include "engproj/engine/component/view.hpp"
 #include "engproj/engine/handle.hpp"
 #include "engproj/engine/handle_mngr.hpp"
+#include "engproj/logger/logger.hpp"
 
 namespace engproj::engine{
 
 
 class world{
-  world(entity_hdl_mngr entity_manager) : entity_manager_(entity_manager){}
+public:
+  world(entity_hdl_mngr& entity_manager) : entity_manager_(entity_manager){}
 
-  entity_hdl create_entity();//use handle_mngr
-  void destroy_entity(entity_hdl);//use handle_mngr
-  bool is_valid(entity_hdl);//use handle_mngr
+  [[nodiscard]]
+  std::optional<entity_hdl> create_entity(){
+    auto temp = entity_manager_.create_handle();
+    if(temp){
+      return *temp;
+    }else{
+      return temp;
+    }
+  }
+
+  bool destroy_entity(entity_hdl handle){
+    bool exists = entity_exists(handle);
+    if(exists){
+      deferred_destroy.push_back(handle);
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  bool entity_exists(entity_hdl handle){
+    return entity_manager_.has_handle(handle);
+  }
 
   template<typename T,typename... Args>
-  T& add_component(entity_hdl){
-    //implement
+  T* add_component(entity_hdl handle, Args&&... args){
+    static_assert(is_valid_component<T>(), "Tried to add invalid component type to world");
+    if(!entity_exists(handle)){
+      logger::e_logger.debug("Tried to add component to handle that handle manager says is invalid. Entity id:{},gen:{}",handle.id,handle.gen);
+      return nullptr;
+    }
+    return get_pool<T>().add_component(handle, std::forward<Args>(args)...);
   }
 
   template<typename... Components>
@@ -41,7 +68,8 @@ class world{
 
 
 private:
-  entity_hdl_mngr entity_manager_;
+  entity_hdl_mngr& entity_manager_;
+  std::vector<entity_hdl> deferred_destroy;
   component::componentpool<component::transform> transform_pool_;
   component::componentpool<component::camera> camera_pool_;
   //you must add all the pools

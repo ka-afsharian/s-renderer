@@ -36,7 +36,7 @@ public:
     handle_id_type id = free_ids_.back();
     free_ids_.pop_back();
     handle_gen_type gen = hdl_id_to_gen_[id];
-    dense_hdl_.push_back({id,gen});
+    dense_hdl_.emplace_back(id,gen);
     hdl_id_to_index_[id]=dense_hdl_.size()-1;
     return dense_hdl_.back();
   }
@@ -70,8 +70,8 @@ public:
     hdl_id_to_index_.resize(new_size,invalid_index_);
     hdl_id_to_gen_.resize(new_size,0);
     free_ids_.reserve(newamount);
-    for(size_t i = old_size+newamount-1;i > old_size-1;i--){
-      free_ids_.emplace_back(i);
+    for(size_t i = 0;i < newamount;i++){
+      free_ids_.emplace_back(old_size+newamount - 1 - i);
     }
     logger::e_logger.debug("Finished expanding handle_mngr sparse vecors: free_ids size:{}",free_ids_.size());
     /*

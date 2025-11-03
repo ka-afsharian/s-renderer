@@ -22,20 +22,20 @@ public:
   }
 
   template<typename... Args>
-  std::optional<T&> add_component(entity_hdl entity, Args&&... args){ //this returns reference, careful with multithreading
+  T* add_component(entity_hdl entity, Args&&... args){ //this returns reference, careful with multithreading
     if(!entity_valid(entity) || has_component(entity)){
       logger::e_logger.debug("Tried to add component that already existed, or to invalid entity. Entity id:{}, gen:{}",entity.id,entity.gen);
-      return std::nullopt;
+      return nullptr;
     }
     ensure_capacity(entity); //grows the sparse vector if neccessary
 
     size_t index = entities_.size();
     entities_.push_back(entity);
-    components_.push_back(std::forward<Args>(args)...);
+    components_.emplace_back(std::forward<Args>(args)...);
     entity_to_index_[entity.id] = index;//static cast entity.id to size_t ?
 
     logger::e_logger.debug("Added component to entity. Entity id:{}, gen:{}",entity.id,entity.gen);
-    return components_.back();
+    return &components_.back();
   }
 
   T& get_component_no_check(entity_hdl entity){//only use if you know entity has component

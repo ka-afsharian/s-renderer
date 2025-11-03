@@ -15,7 +15,7 @@ public:
     if constexpr(sizeof...(Components)>1){
       return iterablerange_multi<Components...>(pools_);
     }else if constexpr(sizeof...(Components)==1){
-      return iterablerange<Components...>(pools_);
+      return iterablerange<Components...>(std::get<0>(pools_));
     }else{
       static_assert(sizeof...(Components)>0,"view<> requries at least one component type");
     }

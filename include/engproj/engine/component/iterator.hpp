@@ -35,7 +35,7 @@ private:
 template<typename... components>
 class iterator_multi{//this can't work with stl algos since only some indicies are valid
 public:
-  iterator_multi(size_t index,std::tuple<componentpool<components>&...>& pools,std::vector<entity_hdl>& entities)
+  iterator_multi(size_t index,std::tuple<componentpool<components>&...>& pools,const std::vector<entity_hdl>& entities)
        : pools_(pools),entities_(entities),index_(index),size_(entities_.size()){
     if(index_<size_ && !all_pools_have_component(std::index_sequence_for<components...>{})){
       next_valid();
@@ -44,7 +44,7 @@ public:
 
   auto operator*(){
     return std::tuple_cat(std::forward_as_tuple(entities_[index_]),
-                          std::forward_as_tuple(std::get<componentpool<components>>(pools_).get_component_no_check(entities_[index_])...));
+                          std::forward_as_tuple(std::get<componentpool<components>&>(pools_).get_component_no_check(entities_[index_])...));
   }
 
   iterator_multi& operator++(){
@@ -61,7 +61,7 @@ public:
 
 private:
   std::tuple<componentpool<components>&...> pools_;
-  std::vector<entity_hdl>& entities_;
+  const std::vector<entity_hdl>& entities_;
   size_t index_;
   size_t size_;
 

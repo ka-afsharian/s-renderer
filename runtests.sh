@@ -1,3 +1,3 @@
 #!/bin/bash
 cd tests/Release/
-./test_ECS
+./test_handle_manager

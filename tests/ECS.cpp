@@ -5,28 +5,26 @@
 #include "engproj/engine/handle_mngr.hpp"
 #include "engproj/engine/component/iterator.hpp"
 #include "engproj/engine/component/iterablerange.hpp"
+#include <iostream>
 using namespace engproj::engine;
 int main(){
   entity_hdl_mngr handle_manager{};
-  std::vector<entity_hdl> myvec{};
-  for(int i = 0; i!=5000;i++){
-    entity_hdl temp =*handle_manager.create_handle();
-    myvec.push_back(temp);
-  }
-  for(int i = 0; i!=4950;i++){
-    handle_manager.destroy_handle(myvec.back());
-    myvec.pop_back();
-  }
-  engproj::logger::t_logger.debug("Finished first pass, handle_mngr size:{}",handle_manager.size());
-  for(int i = 0; i!=5000;i++){
-    entity_hdl temp =*handle_manager.create_handle();
-    myvec.push_back(temp);
-  }
-  for(int i = 0; i!=4950;i++){
-    handle_manager.destroy_handle(myvec.back());
-    myvec.pop_back();
-  }
-  engproj::logger::t_logger.debug("Done adding entities, handle_mngr size:{}",handle_manager.size());
+  engproj::engine::world myworld{handle_manager};
+  auto camera = myworld.create_entity();
+  auto player = myworld.create_entity();
   handle_manager.debug_print();
-  //world myworld{};
+  myworld.add_component<component::transform>(*camera, glm::vec3(0.0f,0.0f,0.0f),glm::quat(1.0f,0.0f,0.0f,0.0f),
+                                              glm::vec3(1.0f,1.0f,1.0f));
+  myworld.add_component<component::camera>(*camera, glm::vec3(),glm::vec3(),45.0f,1.8f,1.0f,6.0f);
+  myworld.add_component<component::transform>(*player, glm::vec3(5.0f,5.0f,5.0f),glm::quat(1.0f,0.0f,0.0f,0.0f),
+                                              glm::vec3(1.0f,1.0f,1.0f));
+  auto myview = myworld.get_view<component::camera,component::transform>();
+  for(auto [a,b,c] : myview.each()){
+    (void)a;(void)b;
+    c.position = glm::vec3(22.0f,22.0f,22.0f);
+  }
+  for(auto [a,b,c] : myview.each()){
+    (void)a;(void)b;
+    std::cout << c.position.x;
+  }
 }
