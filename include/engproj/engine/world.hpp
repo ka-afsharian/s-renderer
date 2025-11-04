@@ -7,6 +7,7 @@
 #include "engproj/engine/handle.hpp"
 #include "engproj/engine/handle_mngr.hpp"
 #include "engproj/logger/logger.hpp"
+#include <utility>
 
 namespace engproj::engine{
 
@@ -25,9 +26,14 @@ public:
     }
   }
 
+  //Delete copy and move operations
+  world(const world&) = delete;            // copy constructor
+  world& operator=(const world&) = delete; // copy assignment
+  world(world&&) = delete;                 // move constructor
+  world& operator=(world&&) = delete;      // move assignment
+
   bool destroy_entity(entity_hdl handle){
-    bool exists = entity_exists(handle);
-    if(exists){
+    if(entity_exists(handle)){
       deferred_destroy.push_back(handle);
       return true;
     }else{
@@ -49,6 +55,16 @@ public:
     return get_pool<T>().add_component(handle, std::forward<Args>(args)...);
   }
 
+  template<typename T>
+  T* get_component(entity_hdl handle){
+    static_assert(is_valid_component<T>(), "Tried to add invalid component type to world");
+    if(!entity_exists(handle)){
+      logger::e_logger.debug("Tried to get component of handle that handle manager says is invalid. Entity id:{},gen:{}",handle.id,handle.gen);
+      return nullptr;
+    }
+    return get_pool<T>().get_component(handle);
+  }
+
   template<typename... Components>
   component::view<Components...> get_view(){
     static_assert(sizeof...(Components) > 0, "View must have at least one component");
@@ -65,7 +81,25 @@ public:
     return component::view<Components ...>(get_pool<Components>()...);
   }
 
+  auto get_all_pools(){
+    return std::tie(get_pool<component::transform>(),
+                           get_pool<component::camera>());
+  }
 
+  template<std::size_t... Is>
+  void end_frame(std::index_sequence<Is...>){
+    auto pools = get_all_pools();
+    while(!deferred_destroy.empty()){
+      auto entity = deferred_destroy.back();
+      (std::get<Is>(pools).remove_component(entity),...);
+      entity_manager_.destroy_handle(entity);
+      deferred_destroy.pop_back();
+    }
+  }
+
+  void end_frame(){
+    end_frame(std::make_index_sequence<pool_count_>{});
+  }
 
 private:
   entity_hdl_mngr& entity_manager_;
@@ -73,6 +107,7 @@ private:
   component::componentpool<component::transform> transform_pool_;
   component::componentpool<component::camera> camera_pool_;
   //you must add all the pools
+  static constexpr std::size_t pool_count_ = 2;
 
   template<typename T>
   component::componentpool<T>& get_pool();//constexpr or not? idk

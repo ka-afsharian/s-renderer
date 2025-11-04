@@ -12,7 +12,7 @@ public:
   }
 
   auto operator*(){
-    return std::make_tuple(component_pool_.get_entities()[index_],component_pool_.get_components()[index_]);
+    return std::tie(component_pool_.get_entities()[index_],component_pool_.get_components()[index_]);
   }
 
   iterator& operator++(){

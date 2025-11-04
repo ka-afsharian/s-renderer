@@ -25,6 +25,12 @@ public:
                            hdl_id_to_index_.size(),hdl_id_to_gen_.size(),free_ids_.size(),dense_hdl_.size());
   }
 
+  //Delete copy and move operations
+  handle_mngr(const handle_mngr&) = delete;            // copy constructor
+  handle_mngr& operator=(const handle_mngr&) = delete; // copy assignment
+  handle_mngr(handle_mngr&&) = delete;                 // move constructor
+  handle_mngr& operator=(handle_mngr&&) = delete;      // move assignment
+
   [[nodiscard]]
   std::optional<hdl> create_handle(){
     if(hdl_id_to_index_.size() == max_id_ && free_ids_.empty()){

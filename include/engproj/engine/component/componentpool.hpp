@@ -20,6 +20,12 @@ public:
   //must be preallocated, all values invalid ^
   //start with a 1000 or so?
   }
+  componentpool(const componentpool&) = delete;
+  componentpool& operator=(const componentpool&) = delete;
+
+    // Delete move operations
+  componentpool(componentpool&&) = delete;
+  componentpool& operator=(componentpool&&) = delete;
 
   template<typename... Args>
   T* add_component(entity_hdl entity, Args&&... args){ //this returns reference, careful with multithreading
@@ -47,20 +53,20 @@ public:
     return components_[index];
   }
 
-  std::optional<T&> get_component(entity_hdl entity){
+  T* get_component(entity_hdl entity){
     if(!has_component(entity)){
-      return std::nullopt;
+      return nullptr;
     }
     size_t index = entity_to_index_[entity.id];//entire point we have sparse vector, fast lookup
-    return components_[index];
+    return &components_[index];
   }
 
-  std::optional<const T&> get_component(entity_hdl entity) const{
+  const T* get_component(entity_hdl entity) const{
     if(!has_component(entity)){
-      return std::nullopt;
+      return nullptr;
     }
     size_t index = entity_to_index_[entity.id];
-    return components_[index];
+    return &components_[index];
   }
 
   bool remove_component(entity_hdl entity){
@@ -72,15 +78,16 @@ public:
     size_t last_index = entities_.size() - 1;
 
     if(index!=last_index){
+      entity_to_index_[entities_[last_index].id] = index;
       components_[index] = std::move(components_[last_index]);
       entities_[index] = entities_[last_index];
-      entity_to_index_[entities_[index].id] = index;
     }
 
     components_.pop_back();
     entities_.pop_back();
-    entity_to_index_[last_index] = invalid_index_;
-
+    entity_to_index_[entity.id] = invalid_index_;
+    //logger::e_logger.debug("Removed component from entity: id:{},gen:{},pool newsize:{}, component_type:{}",
+    //                       entity.id,entity.gen,size(),__PRETTY_FUNCTION__);//remove this later
     return true;
   }
 
@@ -93,7 +100,7 @@ public:
   }
 
   //direct access for maximum performance
-  const std::vector<T>& get_components() const{
+  const std::vector<T>& get_components() const{//find if const, can still change values in T. just can't pop push vector
     return components_;
   }
   const std::vector<entity_hdl>& get_entities() const{

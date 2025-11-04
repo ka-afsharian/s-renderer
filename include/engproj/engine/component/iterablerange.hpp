@@ -61,7 +61,7 @@ public:
 private:
   std::tuple<componentpool<components>&...>& pools_;
   const std::vector<entity_hdl>* smallest_entities_;
-  size_t size_;
+  std::size_t size_;//not true size, just size of smallest pool
 
 
   template<std::size_t... Is>

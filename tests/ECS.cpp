@@ -18,13 +18,25 @@ int main(){
   myworld.add_component<component::camera>(*camera, glm::vec3(),glm::vec3(),45.0f,1.8f,1.0f,6.0f);
   myworld.add_component<component::transform>(*player, glm::vec3(5.0f,5.0f,5.0f),glm::quat(1.0f,0.0f,0.0f,0.0f),
                                               glm::vec3(1.0f,1.0f,1.0f));
+
   auto myview = myworld.get_view<component::camera,component::transform>();
+
   for(auto [a,b,c] : myview.each()){
     (void)a;(void)b;
     c.position = glm::vec3(22.0f,22.0f,22.0f);
   }
-  for(auto [a,b,c] : myview.each()){
+  myworld.destroy_entity(*camera);
+  myworld.end_frame();
+  auto myview2 = myworld.get_view<component::camera,component::transform>();
+  for(auto [a,b,c] : myview2.each()){
     (void)a;(void)b;
-    std::cout << c.position.x;
+    engproj::logger::t_logger.debug("inside myview each loop enity{},camera{},transform{}",a.id,b.aspect,c.position.x);
   }
+  auto myview3 = myworld.get_view<component::transform>();
+  for(auto [a,b] : myview3.each()){
+    engproj::logger::t_logger.debug("inside myview each loop enity{},transform{}",a.id,b.position.x);
+  }
+  handle_manager.debug_print();
+
+
 }
