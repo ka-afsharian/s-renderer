@@ -17,13 +17,12 @@ class componentpool{
 public:
   componentpool() : entity_to_index_(1000,invalid_index_){
     //entity_to_index_ must start with at least size = 1. otherwise ensure capacity might not work?
-  //must be preallocated, all values invalid ^
+  //must be constructed, all values invalid ^
   //start with a 1000 or so?
   }
+
   componentpool(const componentpool&) = delete;
   componentpool& operator=(const componentpool&) = delete;
-
-    // Delete move operations
   componentpool(componentpool&&) = delete;
   componentpool& operator=(componentpool&&) = delete;
 
@@ -40,7 +39,7 @@ public:
     components_.emplace_back(std::forward<Args>(args)...);
     entity_to_index_[entity.id] = index;//static cast entity.id to size_t ?
 
-    logger::e_logger.debug("Added component to entity. Entity id:{}, gen:{}",entity.id,entity.gen);
+    //logger::e_logger.debug("Added component to entity. Entity id:{}, gen:{}",entity.id,entity.gen);
     return &components_.back();
   }
 
@@ -121,8 +120,8 @@ public:
   void debug_print(){
     logger::e_logger.debug("Printing componentpool:");
     for(int i =0;i!=size();i++){
-      auto [entity,component] = std::pair(entities_[i],components_[i]);
-      //logger::e_logger.debug("Entity id:{}, gen:{}, Component data:{}",entity.id,entity.gen,component.debug_string());//impliment debug string
+      auto [entity,component] = std::tie(entities_[i],components_[i]);
+      logger::e_logger.debug("Entity id:{}, gen:{}, Component data:{}",entity.id,entity.gen,component.debug_string());//impliment debug string
     }
   }
 

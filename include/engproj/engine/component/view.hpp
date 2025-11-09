@@ -1,6 +1,5 @@
 #pragma once
 
-#include "engproj/engine/handle.hpp"
 #include "engproj/engine/component/componentpool.hpp"
 #include "engproj/engine/component/iterablerange.hpp"
 

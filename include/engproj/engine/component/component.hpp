@@ -3,6 +3,9 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include <string>
+#include <format>
+
 
 
 namespace engproj::engine::component{
@@ -11,6 +14,12 @@ struct transform{
   glm::vec3 position;
   glm::quat rotation;
   glm::vec3 scale;
+
+  std::string debug_string(){
+    glm::vec3 euler = glm::eulerAngles(rotation);
+    return std::format("Position:({},{},{}), Rotation (rad):(pitch:{},yaw:{},roll:{}), Scale:({},{},{})",
+                       position.x,position.y,position.z,euler.x,euler.y,euler.z,scale.x,scale.y,scale.z);
+  }
 };
 
 struct translate{
@@ -32,6 +41,10 @@ struct camera{
   float znear;
   float zfar;
   //glm::mat4 viewproj;//the previous stuff might not be neccessary if i keep this
+  std::string debug_string(){
+    return std::format("Front:({},{},{}), Up:({},{},{}), fov:{}, aspect:{}, znear:{}, zfar:{}",
+                       front.x,front.y,front.z,up.x,up.y,up.z,fov,aspect,znear,zfar);
+  }
 };
 
 
