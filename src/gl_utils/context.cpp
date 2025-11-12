@@ -63,7 +63,7 @@ void* context::get_context_ptr(){
 
 
 bool context::isvalid() const{
-  if(!(context_->context_ && window_->isvalid())){
+  if(!(context_->context_ && window_->isvalid())){//wtf, just return
     return false;
   }else{return true;}
 }
