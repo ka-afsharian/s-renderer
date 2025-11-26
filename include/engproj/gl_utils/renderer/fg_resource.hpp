@@ -26,29 +26,31 @@ public:
     depth_attachment = 1 << 3//depth/stencil buffer
   };
 
-  fg_resource(uint32_t w, uint32_t h, format fmt, uint32_t usages = usage_flag::none) : width_(w), height_(h),
-                                                                                    format_(fmt), usage_(usages){
+  fg_resource(uint32_t w, uint32_t h, format fmt) : width_(w), height_(h), format_(fmt){
   }
 
   uint32_t width_;
   uint32_t height_;
   format format_;
-  uint32_t usage_;
+  uint32_t usage_ = usage_flag::none;
 
   engine::texture_hdl get_handle() const {
     return texture_;
   }
 
-  void set_handle(engine::texture_hdl handle){
+  fg_resource& set_handle(engine::texture_hdl handle){
     texture_ = handle;
     initialized_ = true;
+    return *this;
   }
 
-  void set_flag(usage_flag flag){
+  fg_resource& set_flag(usage_flag flag){
     usage_ = usage_ | flag;
+    return *this;
   }
-  void unset_flag(usage_flag flag){
+  fg_resource& unset_flag(usage_flag flag){
     usage_ &= ~flag;
+    return *this;
   }
 
   bool has_flag(usage_flag flag) const{

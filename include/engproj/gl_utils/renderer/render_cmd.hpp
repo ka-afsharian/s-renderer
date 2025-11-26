@@ -3,14 +3,10 @@
 
 namespace engproj::gl_utils::renderer{
 
-class render_cmd{
-public:
+struct render_cmd{
   enum class type{
     bind_pipeline
   };
-
-
-private:
   type type_;
 
 };
