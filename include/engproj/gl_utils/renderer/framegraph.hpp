@@ -51,6 +51,9 @@ public:
     for(auto& [name,pass] : passes_){
       pass->register_resources(*this);
       for(const auto& write_res : pass->writes_){
+        if(resource_writers_.contains(write_res)){
+          throw std::runtime_error("resource_writers_ already contains resource. framegraph class, compile function");
+        }
         resource_writers_[write_res] = pass.get();//assumes each resource only has one pass writing to it, which should be the case
       }
     }
@@ -62,7 +65,7 @@ public:
       }
     }
 
-    //lambda that recursively marks passes needed
+    //lambda that recursively marks passes needed and does topological sort for creation of execution list
     auto mark_pass_recursive = [&](auto&& self, renderer::render_pass* pass) -> void {
       if(!pass || marked_passes_.count(pass) > 0){
         return;
@@ -77,13 +80,15 @@ public:
         }
       }
 
+      execution_list_.push_back(pass);//this is good, execution_list will be in right order
+
     };
 
     for (auto* res : root_passes_){
       mark_pass_recursive(mark_pass_recursive,res);
     }
 
-    //<---here use resoucemanager to initialize all the handles
+    //<---here use resoucemanager to initialize all the handles in marked passes
     dirty_bit_ = false;
   }
 
